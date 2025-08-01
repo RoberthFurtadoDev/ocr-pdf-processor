@@ -22,7 +22,6 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 ### Fluxo do Processamento:
 
 ```mermaid
-graph TD
     A[Cliente] -- 1. POST /api/pdf/upload --> B(API REST - Spring Boot);
     B -- 2. Salva PDF --> C[Amazon S3];
     B -- 3. Salva registro no DB (status: AGUARDANDO) --> D[(PostgreSQL)];
