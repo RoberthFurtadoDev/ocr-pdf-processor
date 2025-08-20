@@ -20,6 +20,7 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
 ## Fluxo de Processamento do PDF
+
 ```mermaid
 flowchart TD
     A[Cliente] -- "1. POST /api/pdf/upload" --> B[API REST - Spring Boot]
@@ -27,7 +28,7 @@ flowchart TD
     B -- "3. Salva registro no DB (status: AGUARDANDO)" --> D[(PostgreSQL)]
     B -- "4. Envia mensagem com ID" --> E[Fila Amazon SQS]
 
-    F[Worker (SqsListenerService)] -- "5. Lê mensagem da fila" --> E
+    E -- "5. Lê mensagem da fila" --> F[Worker SqsListenerService]
     F -- "6. Atualiza status para PROCESSANDO" --> D
     F -- "7. Pede para o Textract analisar o arquivo do S3" --> C
     F -- "8. Envia arquivo para análise" --> G[Amazon Textract AI]
