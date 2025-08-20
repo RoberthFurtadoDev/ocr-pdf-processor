@@ -20,21 +20,32 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
 ## Fluxo de Processamento do PDF
-```mermaid
+
 flowchart TD
+    %% Nós e textos são definidos primeiro para maior robustez
+
     subgraph "1. Upload do Arquivo"
         direction TB
-        A[Cliente] -->|1. POST /api/pdf/upload| B[API REST - Spring Boot]
-        B -->|2. Salva PDF| C[Amazon S3]
-        B -->|3. Salva registro 'AGUARDANDO'| D[(PostgreSQL)]
-        B -->|4. Envia ID para a fila| E[Fila Amazon SQS]
+        A[Cliente]
+        B[API REST - Spring Boot]
+        C[Amazon S3]
+        D[(PostgreSQL)]
+        E[Fila Amazon SQS]
+        
+        A -->|1. POST /api/pdf/upload| B
+        B -->|2. Salva PDF| C
+        B -->|3. Salva registro 'AGUARDANDO'| D
+        B -->|4. Envia ID para a fila| E
     end
 
     subgraph "2. Processamento Assíncrono"
         direction TB
-        E -->|5. Worker lê mensagem| F[Worker SqsListenerService]
+        F[Worker SqsListenerService]
+        G[Amazon Textract] %% <- Nó problemático definido de forma segura
+
+        E -->|5. Worker lê mensagem| F
         F -->|6. Atualiza status para 'PROCESSANDO'| D
-        F -->|7. Inicia análise do arquivo (no S3)| G[Amazon Textract]
+        F -->|7. Inicia análise do arquivo (no S3)| G
         G -->|8. Retorna texto extraído| F
         F -->|9. Salva texto e status 'CONCLUÍDO'| D
     end
@@ -44,7 +55,6 @@ flowchart TD
         A -->|10. GET /api/pdf/status/{id}| B
         B -->|11. Consulta status no DB| D
     end
-```
 
 ## 🛠️ Decisões Técnicas
 
