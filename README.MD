@@ -21,6 +21,7 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 
 ## Fluxo de Processamento do PDF
 
+```mermaid
 flowchart TD
     %% Nós e textos são definidos primeiro para maior robustez
 
@@ -41,7 +42,7 @@ flowchart TD
     subgraph "2. Processamento Assíncrono"
         direction TB
         F[Worker SqsListenerService]
-        G[Amazon Textract] %% <- Nó problemático definido de forma segura
+        G[Amazon Textract]
 
         E -->|5. Worker lê mensagem| F
         F -->|6. Atualiza status para 'PROCESSANDO'| D
