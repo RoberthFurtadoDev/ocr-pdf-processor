@@ -19,8 +19,6 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
-### Fluxo do Processamento:
-
 ## Fluxo de Processamento do PDF
 
 ```mermaid
@@ -32,13 +30,14 @@ flowchart TD
 
     E -- "5. Lê mensagem da fila" --> F[Worker SqsListenerService]
     F -- "6. Atualiza status para PROCESSANDO" --> D
-    F -- "7. Pede para o Textract analisar o arquivo do S3" --> C
+    F -- "7. Pede para o Textract analisar o arquivo no S3" --> C
     F -- "8. Envia arquivo para análise" --> G[Amazon Textract AI]
     G -- "9. Retorna texto extraído" --> F
     F -- "10. Salva texto e atualiza status para CONCLUIDO" --> D
 
     A -- "11. GET /api/pdf/status/{id}" --> B
     B -- "12. Consulta status no DB" --> D
+
 
 ## 🛠️ Decisões Técnicas
 
