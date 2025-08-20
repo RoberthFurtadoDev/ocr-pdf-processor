@@ -21,23 +21,29 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 
 ## Fluxo de Processamento do PDF
 
-```mermaid
 flowchart TD
-    A[Cliente] -->|1. POST /api/pdf/upload| B[API REST - Spring Boot]
-    B -->|2. Salva PDF| C[Amazon S3]
-    B -->|3. Salva registro no DB AGUARDANDO| D[(PostgreSQL)]
-    B -->|4. Envia mensagem com ID| E[Fila Amazon SQS]
+    subgraph "1. Upload do Arquivo"
+        direction TB
+        A[Cliente] -->|1. POST /api/pdf/upload| B[API REST - Spring Boot]
+        B -->|2. Salva PDF| C[Amazon S3]
+        B -->|3. Salva registro 'AGUARDANDO'| D[(PostgreSQL)]
+        B -->|4. Envia ID para a fila| E[Fila Amazon SQS]
+    end
 
-    E -->|5. Lê mensagem da fila| F[Worker SqsListenerService]
-    F -->|6. Atualiza status PROCESSANDO| D
-    F -->|7. Pede análise Textract (S3)| C
-    F -->|8. Envia arquivo para análise| G[Amazon Textract AI]
-    G -->|9. Retorna texto extraído| F
-    F -->|10. Salva texto e CONCLUIDO| D
+    subgraph "2. Processamento Assíncrono"
+        direction TB
+        E -->|5. Worker lê mensagem| F[Worker SqsListenerService]
+        F -->|6. Atualiza status para 'PROCESSANDO'| D
+        F -->|7. Inicia análise do arquivo (no S3)| G[Amazon Textract]
+        G -->|8. Retorna texto extraído| F
+        F -->|9. Salva texto e status 'CONCLUÍDO'| D
+    end
 
-    A -->|11. GET /api/pdf/status/{id}| B
-    B -->|12. Consulta status no DB| D
-```
+    subgraph "3. Consulta de Status"
+        direction TB
+        A -->|10. GET /api/pdf/status/{id}| B
+        B -->|11. Consulta status no DB| D
+    end
 
 ## 🛠️ Decisões Técnicas
 
