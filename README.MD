@@ -23,20 +23,20 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 
 ```mermaid
 flowchart TD
-    A[Cliente] -- "1. POST /api/pdf/upload" --> B[API REST - Spring Boot]
-    B -- "2. Salva PDF" --> C[Amazon S3]
-    B -- "3. Salva registro no DB (status: AGUARDANDO)" --> D[(PostgreSQL)]
-    B -- "4. Envia mensagem com ID" --> E[Fila Amazon SQS]
+    A[Cliente] -->|POST /api/pdf/upload| B[API REST Spring Boot]
+    B -->|Salva PDF| C[Amazon S3]
+    B -->|Salva registro (AGUARDANDO)| D[(PostgreSQL)]
+    B -->|Envia mensagem com ID| E[Amazon SQS]
 
-    E -- "5. Lê mensagem da fila" --> F[Worker SqsListenerService]
-    F -- "6. Atualiza status para PROCESSANDO" --> D
-    F -- "7. Pede para o Textract analisar o arquivo no S3" --> C
-    F -- "8. Envia arquivo para análise" --> G[Amazon Textract AI]
-    G -- "9. Retorna texto extraído" --> F
-    F -- "10. Salva texto e atualiza status para CONCLUIDO" --> D
+    E -->|Ler mensagem| F[Worker SqsListenerService]
+    F -->|Atualiza status PROCESSANDO| D
+    F -->|Pede analise Textract| C
+    F -->|Envia para analise| G[Amazon Textract]
+    G -->|Retorna texto| F
+    F -->|Salva texto e CONCLUIDO| D
 
-    A -- "11. GET /api/pdf/status/{id}" --> B
-    B -- "12. Consulta status no DB" --> D
+    A -->|GET /api/pdf/status/{id}| B
+    B -->|Consulta status| D
 ```
 
 ## 🛠️ Decisões Técnicas
