@@ -30,7 +30,7 @@ flowchart TD
     B -- "3. Salva registro no DB (status: AGUARDANDO)" --> D[(PostgreSQL)]
     B -- "4. Envia mensagem com ID" --> E[Fila Amazon SQS]
 
-    F[Worker (SqsListenerService)] -- "5. Lê mensagem da fila" --> E
+    E -- "5. Lê mensagem da fila" --> F[Worker SqsListenerService]
     F -- "6. Atualiza status para PROCESSANDO" --> D
     F -- "7. Pede para o Textract analisar o arquivo do S3" --> C
     F -- "8. Envia arquivo para análise" --> G[Amazon Textract AI]
@@ -39,7 +39,6 @@ flowchart TD
 
     A -- "11. GET /api/pdf/status/{id}" --> B
     B -- "12. Consulta status no DB" --> D
-
 
 ## 🛠️ Decisões Técnicas
 
