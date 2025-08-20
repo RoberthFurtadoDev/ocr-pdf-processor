@@ -37,7 +37,7 @@ flowchart TD
 
     A -- "11. GET /api/pdf/status/{id}" --> B
     B -- "12. Consulta status no DB" --> D
-
+```
 
 ## 🛠️ Decisões Técnicas
 
