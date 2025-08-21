@@ -20,7 +20,6 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
 ## Fluxo de Processamento do PDF
-
 ```mermaid
 flowchart TD
     subgraph "1. Upload do Arquivo"
@@ -55,7 +54,6 @@ flowchart TD
         B -->|11. Consulta status no DB| D
     end
 ```
-
 ## 🛠️ Decisões Técnicas
 
 * **Java com Spring Boot**: pela robustez, ecossistema maduro e facilidade de criar APIs REST.
