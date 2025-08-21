@@ -20,6 +20,7 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
 ## Fluxo de Processamento do PDF
+
 ```mermaid
 flowchart TD
     subgraph "1. Upload do Arquivo"
@@ -32,25 +33,27 @@ flowchart TD
         
         A -->|1. POST /api/pdf/upload| B
         B -->|2. Salva PDF| C
-        B -->|3. Salva registro 'AGUARDANDO'| D
+        B -->|3. Salva registro AGUARDANDO| D
         B -->|4. Envia ID para a fila| E
+    end
 
-    subgraph "2. Processamento Assíncrono"
+    subgraph "2. Processamento Assincrono"
         direction TB
         F[Worker SqsListenerService]
         G[Amazon Textract]
 
-        E -->|5. Worker lê mensagem| F
-        F -->|6. Atualiza status para 'PROCESSANDO'| D
-        F -->|7. Inicia análise do arquivo (no S3)| G
-        G -->|8. Retorna texto extraído| F
-        F -->|9. Salva texto e status 'CONCLUÍDO'| D
+        E -->|5. Worker le mensagem| F
+        F -->|6. Atualiza status PROCESSANDO| D
+        F -->|7. Inicia analise do arquivo (no S3)| G
+        G -->|8. Retorna texto extraido| F
+        F -->|9. Salva texto e status CONCLUIDO| D
+    end
 
     subgraph "3. Consulta de Status"
         direction TB
         A -->|10. GET /api/pdf/status/{id}| B
         B -->|11. Consulta status no DB| D
-```
+    end
 
 ## 🛠️ Decisões Técnicas
 
