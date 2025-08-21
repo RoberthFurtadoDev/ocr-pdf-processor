@@ -34,7 +34,6 @@ flowchart TD
         B -->|2. Salva PDF| C
         B -->|3. Salva registro 'AGUARDANDO'| D
         B -->|4. Envia ID para a fila| E
-    end
 
     subgraph "2. Processamento Assíncrono"
         direction TB
@@ -46,13 +45,12 @@ flowchart TD
         F -->|7. Inicia análise do arquivo (no S3)| G
         G -->|8. Retorna texto extraído| F
         F -->|9. Salva texto e status 'CONCLUÍDO'| D
-    end
 
     subgraph "3. Consulta de Status"
         direction TB
         A -->|10. GET /api/pdf/status/{id}| B
         B -->|11. Consulta status no DB| D
-   end
+```
 
 ## 🛠️ Decisões Técnicas
 
