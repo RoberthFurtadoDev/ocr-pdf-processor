@@ -52,8 +52,8 @@ flowchart TD
         direction TB
         A -->|10. GET /api/pdf/status/{id}| B
         B -->|11. Consulta status no DB| D
-    end
-```
+   ```end
+
 ## 🛠️ Decisões Técnicas
 
 * **Java com Spring Boot**: pela robustez, ecossistema maduro e facilidade de criar APIs REST.
