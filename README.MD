@@ -23,37 +23,37 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 
 ```mermaid
 flowchart TD
-    subgraph "1. Upload do Arquivo"
-        direction TB
-        A[Cliente]
-        B[API REST - Spring Boot]
-        C[Amazon S3]
-        D[(PostgreSQL)]
-        E[Fila Amazon SQS]
-        
-        A -->|1. POST /api/pdf/upload| B
-        B -->|2. Salva PDF| C
-        B -->|3. Salva registro AGUARDANDO| D
-        B -->|4. Envia ID para a fila| E
-    end
-
-    subgraph "2. Processamento Assincrono"
-        direction TB
-        F[Worker SqsListenerService]
-        G[Amazon Textract]
-
-        E -->|5. Worker le mensagem| F
-        F -->|6. Atualiza status PROCESSANDO| D
-        F -->|7. Inicia analise do arquivo (no S3)| G
-        G -->|8. Retorna texto extraido| F
-        F -->|9. Salva texto e status CONCLUIDO| D
-    end
-
-    subgraph "3. Consulta de Status"
-        direction TB
-        A -->|10. GET /api/pdf/status/{id}| B
-        B -->|11. Consulta status no DB| D
-    end
+ subgraph subGraph0[Upload do Arquivo]
+    direction TB
+        A["Cliente"]
+        B["API REST - Spring Boot"]
+        C["Amazon S3"]
+        D[("PostgreSQL")]
+        E["Fila Amazon SQS"]
+  end
+ subgraph subGraph1[Processamento Assincrono]
+    direction TB
+        F["Worker SqsListenerService"]
+        G["Amazon Textract"]
+  end
+ subgraph subGraph2[Consulta de Status]
+    direction TB
+        A1["Cliente"]
+        B2["API REST - Spring Boot"]
+        R["Resultado da Consulta"]
+  end
+    A -- POST /api/pdf/upload --> B
+    B -- Salva PDF --> C
+    B -- Salva registro AGUARDANDO --> D
+    B -- Envia ID para a fila --> E
+    E -- Worker le mensagem --> F
+    F -- Atualiza status PROCESSANDO --> D
+    F -- Inicia analise do arquivo no S3 --> G
+    G -- Retorna texto extraido --> F
+    F -- Salva texto e status CONCLUIDO --> D
+    A1 -- GET /api/pdf/status/id --> B2
+    B2 -- Consulta status no DB --> D
+    B2 -- Retorna resultado --> R
 
 ## 🛠️ Decisões Técnicas
 
