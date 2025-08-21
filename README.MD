@@ -23,8 +23,6 @@ A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente 
 
 ```mermaid
 flowchart TD
-    %% Nós e textos são definidos primeiro para maior robustez
-
     subgraph "1. Upload do Arquivo"
         direction TB
         A[Cliente]
@@ -56,7 +54,6 @@ flowchart TD
         A -->|10. GET /api/pdf/status/{id}| B
         B -->|11. Consulta status no DB| D
     end
-```
 
 ## 🛠️ Decisões Técnicas
 
