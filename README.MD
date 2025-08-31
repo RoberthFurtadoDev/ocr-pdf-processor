@@ -148,5 +148,4 @@ Verifica o status atual de um trabalho de processamento.
 ```
 
 ---
-
-> Feito com 💻 e ☁️ por Roberth Furtado Ferreira de Oliveira
+> Documentação da API com Swagger (OpenAPI 3): http://localhost:8081/swagger-ui.html
