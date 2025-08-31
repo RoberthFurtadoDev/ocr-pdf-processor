@@ -1,9 +1,9 @@
-package br.com.pdfprocessor.Controller;
+package br.com.pdfprocessor.controller;
 
 import br.com.pdfprocessor.dto.StatusResponseDTO;
 import br.com.pdfprocessor.dto.UploadResponseDTO;
 import br.com.pdfprocessor.model.ProcessamentoPdf;
-import br.com.pdfprocessor.Service.PdfProcessamentoService;
+import br.com.pdfprocessor.service.PdfProcessamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

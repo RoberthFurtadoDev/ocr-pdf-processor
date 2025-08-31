@@ -20,7 +20,7 @@ Este projeto automatiza essa tarefa, criando um pipeline de dados que:
 A espinha dorsal do projeto é uma arquitetura orientada a eventos e totalmente desacoplada, orquestrando diferentes serviços da AWS para criar um fluxo de trabalho resiliente.
 
 ### Fluxo do Processamento:
-![Fluxo de Processamento do PDF](src/main/java/br/com/pdfprocessor/assets/fluxo-processamento.svg)
+![Fluxo de Processamento do PDF](src/main/resources/assets/fluxo-processamento.svg)
 
 ## 🛠️ Decisões Técnicas
 

@@ -1,4 +1,4 @@
-package br.com.pdfprocessor.Service;
+package br.com.pdfprocessor.service;
 
 import br.com.pdfprocessor.model.ProcessamentoPdf;
 import br.com.pdfprocessor.model.StatusProcessamento;
